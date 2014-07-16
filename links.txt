@@ -1,0 +1,7 @@
+# hola
+
+ hola -> adios
+
+ hola <- adios
+
+ a->b
