@@ -6,33 +6,29 @@ class node():
     def __init__(self, Id, Content):
         self.Id = Id
         self.Content = Content
-        self.Pointing = []
-        self.Pointed = []
-        self.Childs = []
-        self.Parents = []
+        self.Pointing = set()
+        self.Pointed = set()
+        self.Childs = set()
+        self.Parents = set()
     def addPointing(self, pointingId):
-        if self.Pointing.count(pointingId) == 0:        
-            self.Pointing.append(pointingId)
+        self.Pointing.add(pointingId)
     def addPointed(self, pointedId):
-        if self.Pointed.count(pointedId) == 0:        
-            self.Pointed.append(pointedId)
+        self.Pointed.add(pointedId)
     def removePointed(self, pointedId):
-        if self.Pointed.count(pointedId) > 0:
+        if pointedId in self.Pointed:
             self.Pointed.remove(pointedId)
     def removePointing(self, pointingId):
-        if self.Pointing.count(pointingId) > 0:
+        if pointingId in self.Pointing:
             self.Pointing.remove(pointingId)
     def addParent(self, ParentsId):
-        if self.Parents.count(ParentsId) == 0:        
-            self.Parents.append(ParentsId)            
+        self.Parents.add(ParentsId)            
     def removeParent(self, ParentsId):
-        if self.Parents.count(ParentsId) > 0:
+        if ParentsId in self.Parents:
             self.Parents.remove(ParentsId)  
     def addChild(self, ChildsId):
-        if self.Childs.count(ChildsId) == 0:        
-            self.Childs.append(ChildsId)            
+        self.Childs.add(ChildsId)            
     def removeChild(self, ChildsId):
-        if self.Childs.count(ChildsId) > 0:
+        if ChildsId in self.Childs:
             self.Childs.remove(ChildsId)
     def getlabel(self):
         labelStr=""
@@ -43,8 +39,9 @@ class node():
         return labelStr            
     def getDir(self):
         IdStr=self.Id
-        if len(self.Parents)>0:
-            IdStr=str(self.Parents[0])+":"+IdStr
+        for item in self.Parents:
+            IdStr=str(item)+":"+IdStr
+            break
         return IdStr
     def writeNode(self,container=None):
         nodeStr= ""

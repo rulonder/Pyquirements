@@ -13,76 +13,76 @@ class TestRequirementNode(unittest.TestCase):
         self.assertEqual(new.Id, Idname)
         self.assertEqual(new.Content, content)
         # Pointing and pointed arrays is empty
-        self.assertEqual(new.Pointing, [])   
-        self.assertEqual(new.Pointed,  [])
+        self.assertEqual(new.Pointing, set([]))   
+        self.assertEqual(new.Pointed,  set([]))
     def test_addPointing(self):
         Ids = "idNodeTest"
         content= {1:2,"2":3}        
         new = Requirements.node(Ids,content)
         new.addPointing(2)
-        self.assertEqual(new.Pointing, [2])        
+        self.assertEqual(new.Pointing, set([2]))        
         new.addPointing("test")
-        self.assertEqual(new.Pointing, [2,"test"]) 
+        self.assertEqual(new.Pointing, set([2,"test"])) 
         new.addPointing(2)
-        self.assertEqual(new.Pointing, [2,"test"]) 
+        self.assertEqual(new.Pointing, set([2,"test"])) 
     def test_addPointed(self):
         Ids = "idNodeTest"
         content= {1:2,"2":3}        
         new = Requirements.node(Ids,content)
         new.addPointed(2)
-        self.assertEqual(new.Pointed, [2])        
+        self.assertEqual(new.Pointed, set([2]))        
         new.addPointed("test")
-        self.assertEqual(new.Pointed, [2,"test"]) 
+        self.assertEqual(new.Pointed, set([2,"test"])) 
         new.addPointed(2)
-        self.assertEqual(new.Pointed, [2,"test"]) 
+        self.assertEqual(new.Pointed, set([2,"test"])) 
     def test_removePointed(self):
         Ids = "idNodeTest"
         content= {1:2,"2":3}        
         new = Requirements.node(Ids,content)
         new.addPointed(2)
-        self.assertEqual(new.Pointed, [2])        
+        self.assertEqual(new.Pointed, set([2]))        
         new.removePointed("test")
         # Remove non existing node shall not do anything
-        self.assertEqual(new.Pointed, [2]) 
+        self.assertEqual(new.Pointed, set([2])) 
         new.addPointed("test")
         new.removePointed(2)
-        self.assertEqual(new.Pointed, ["test"])         
+        self.assertEqual(new.Pointed, set(["test"]))         
     def test_removePointing(self):
         Ids = "idNodeTest"
         content= {1:2,"2":3}        
         new = Requirements.node(Ids,content)
         new.addPointing(2)
-        self.assertEqual(new.Pointing, [2])        
+        self.assertEqual(new.Pointing, set([2]))        
         new.removePointing("test")
         # Remove non existing node shall not do anything
-        self.assertEqual(new.Pointing, [2]) 
+        self.assertEqual(new.Pointing, set([2])) 
         new.addPointing("test")
         new.removePointing(2)
-        self.assertEqual(new.Pointing, ["test"])         
+        self.assertEqual(new.Pointing, set(["test"]))         
     def test_Parents(self):
         Ids = "idNodeTest"
         content= {1:2,"2":3}        
         new = Requirements.node(Ids,content)
         new.addParent(2)
-        self.assertEqual(new.Parents, [2])        
+        self.assertEqual(new.Parents, set([2]))        
         new.removeParent("test")
         # Remove non existing node shall not do anything
-        self.assertEqual(new.Parents, [2]) 
+        self.assertEqual(new.Parents, set([2])) 
         new.addParent("test")
         new.removeParent(2)
-        self.assertEqual(new.Parents, ["test"])     
+        self.assertEqual(new.Parents, set(["test"]))     
     def test_Childs(self):
         Ids = "idNodeTest"
         content= {1:2,"2":3}        
         new = Requirements.node(Ids,content)
         new.addChild(2)
-        self.assertEqual(new.Childs, [2])        
+        self.assertEqual(new.Childs, set([2]))        
         new.removeChild("test")
         # Remove non existing node shall not do anything
-        self.assertEqual(new.Childs, [2]) 
+        self.assertEqual(new.Childs, set([2])) 
         new.addChild("test")
         new.removeChild(2)
-        self.assertEqual(new.Childs, ["test"])              
+        self.assertEqual(new.Childs, set(["test"]))              
     def test_string(self):
         # make sure the shuffled sequence does not lose any elements
         Idname = "idNodeTest"
@@ -112,24 +112,24 @@ class TestNodesContainer(unittest.TestCase):
             for toID in range(fromId):
                 self.container.addRelation(fromId,toID)
 
-        self.assertEqual(self.container.getNode(50).Pointing, map(str,range(50)))               
-        self.assertEqual(self.container.getNode(0).Pointed, map(str,range(1,100)))
+        self.assertEqual(self.container.getNode(50).Pointing, set(map(str,range(50))))               
+        self.assertEqual(self.container.getNode(0).Pointed, set(map(str,range(1,100))))
     
     def test_removeRelation(self):
         for fromId in range(100):
             for toID in range(fromId):
                 self.container.addRelation(fromId,toID)        
         self.container.removeRelation(50,0)        
-        self.assertEqual(self.container.getNode(50).Pointing, map(str,range(1,50)))  
+        self.assertEqual(self.container.getNode(50).Pointing, set(map(str,range(1,50))))  
         final = range(1,100)
         final.remove(50)             
-        self.assertEqual(self.container.getNode(0).Pointed, map(str,final) )
+        self.assertEqual(self.container.getNode(0).Pointed, set(map(str,final) ))
 
     def test_parentship(self):
         parent = 2
         for fromId in range(100):
             self.container.addParentship(fromId,parent)             
-        self.assertEqual(self.container.getNode(2).Childs,map(str,range(100)))  
+        self.assertEqual(self.container.getNode(2).Childs,set(map(str,range(100))))  
 
     def test_nodesfiltering(self):
         dummyContent="Dummy"
